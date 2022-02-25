@@ -1,0 +1,2 @@
+import{a as p,b as d}from"./chunk-M2LVQRBT.js";import{a as n}from"./chunk-QXOUCFTL.js";import{a as m}from"./chunk-EL2KYGGK.js";import{a as r}from"./chunk-P5WXMFOM.js";import{b as t}from"./chunk-EGK63SHX.js";function f(e){return m({cmd:"profile",subcmd:"dodropitems",removeIndex:e,ajax:1}).then(n)}function o(e){return p(t("itemRecipient"),e)}function i(e){return d(t("itemRecipient"),e)}function s(e){return r(o,i,e)}export{s as a,f as b};
+//# sourceMappingURL=chunk-PAWRBJVL.js.map
