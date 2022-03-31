@@ -1,0 +1,2 @@
+import{a as n}from"./chunk-EAPOFG5T.js";import{a as r}from"./chunk-KJXK3QHT.js";import{a as m}from"./chunk-TNZZCVPK.js";function d(e,t){return r({cmd:"trade",subcmd:"senditems",xc:window.ajaxXC,target_username:e,items:t})}function s(e,t){return m({cmd:"trade",subcmd:"senditems",xc:window.ajaxXC,target_username:e,sendItemList:t}).then(n)}export{d as a,s as b};
+//# sourceMappingURL=chunk-HMULM2SN.js.map
