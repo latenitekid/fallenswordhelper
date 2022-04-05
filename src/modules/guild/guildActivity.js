@@ -1,15 +1,14 @@
-import daRanksView from '../_dataAccess/daRanksView';
 import fallback from '../system/fallback';
 import lastActivityToDays from '../common/lastActivityToDays';
 import { nowSecs } from '../support/now';
 import partial from '../common/partial';
+import ranksView from '../_dataAccess/fallbacks/ranksView';
 import {
   act, cur, gxp, lvl, max, utc, vl,
 } from './guildTracker/indexConstants';
 import { get, set } from '../system/idb';
 
-let oldArchive;
-let guild;
+let oldArchive = 0;
 
 function pushNewRecord(member) {
   oldArchive.members[member.name].push([
@@ -82,30 +81,27 @@ function processRank(newArchive, rank) {
   rank.members.forEach(partial(processMemberRecord, newArchive));
 }
 
-function doMerge() { // jQuery.min
+function doMerge(guild) { // jQuery.min
   const newArchive = { lastUpdate: nowSecs, members: {} };
   guild.r.forEach(partial(processRank, newArchive));
   set('fsh_guildActivity', newArchive);
 }
 
 function gotGuild(data) {
-  if (data && data.r) {
-    guild = data;
-    doMerge();
+  if (data?.r) {
+    doMerge(data);
   }
 }
 
-function gotActivity(data) { // jQuery.min
-  if (data) {
-    oldArchive = data;
-  } else {
-    oldArchive = { lastUpdate: 0, members: {} };
-  }
+async function gotActivity(data) { // jQuery.min
+  oldArchive = data ?? { lastUpdate: 0, members: {} };
   if (nowSecs > fallback(oldArchive.lastUpdate, 0) + 300) { // 5 mins - probably want to increase
-    daRanksView().then(gotGuild);
+    const json = await ranksView();
+    gotGuild(json);
   }
 }
 
-export default function guildActivity() { // jQuery.min
-  get('fsh_guildActivity').then(gotActivity);
+export default async function guildActivity() { // jQuery.mins
+  const data = await get('fsh_guildActivity');
+  gotActivity(data);
 }
