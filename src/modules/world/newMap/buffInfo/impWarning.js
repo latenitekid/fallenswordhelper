@@ -1,4 +1,5 @@
 import './impWarning.css';
+import createButton from '../../../common/cElement/createButton';
 import createSpan from '../../../common/cElement/createSpan';
 import daQuickbuff from '../../../_dataAccess/daQuickbuff';
 import { defFetchPlayerBuffs } from '../../../support/constants';
@@ -11,8 +12,8 @@ import quickbuffSuccess from '../../../common/quickbuffSuccess';
 import setText from '../../../dom/setText';
 import toggleForce from '../../../common/toggleForce';
 
-let impDiv;
-let impRemainingSpan;
+let impDiv = 0;
+let impRemainingSpan = 0;
 
 function refreshBuffs(json) {
   if (quickbuffSuccess(json)) {
@@ -43,13 +44,12 @@ function getImpWarningStyle(impsRem) {
 }
 
 function initImpDiv(containerDiv) {
-  // eslint-disable-next-line prefer-destructuring
-  impDiv = containerDiv.children[0];
+  [impDiv] = containerDiv.children;
   setText('Shield Imps Remaining: ', impDiv);
   impRemainingSpan = createSpan();
   insertElement(impDiv, impRemainingSpan);
   insertHtmlBeforeEnd(impDiv, '&nbsp;');
-  const recast = createSpan({ className: 'xSmallLink', textContent: 'Recast' });
+  const recast = createButton({ className: 'xSmallLink', textContent: 'Recast' });
   insertElement(impDiv, recast);
   onclick(recast, recastClick);
 }
