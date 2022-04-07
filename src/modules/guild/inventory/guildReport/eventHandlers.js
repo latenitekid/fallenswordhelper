@@ -2,6 +2,7 @@ import './guildReport.css';
 import { cdn } from '../../../system/system';
 import classHandler from '../../../common/classHandler';
 import classPair from '../../../common/classPair';
+import closestTr from '../../../common/closestTr';
 import equipItem from '../../../ajax/equipItem';
 import getElementsByTagName from '../../../common/getElementsByTagName';
 import itemId from './itemId';
@@ -80,15 +81,25 @@ const subClass = [
 function doFastRecall(target) {
   const theTd = target.parentNode.parentNode;
   if (!theTd) { return; }
-  const { href } = theTd.children[0];
+  const [{ href }] = theTd.children;
   if (!href) { return; }
   subClass.find(partial(classPair, target))[1](theTd, href);
   setInnerHtml(spinner, theTd);
 }
 
+function collapsible(target) {
+  let tr = closestTr(target).nextElementSibling;
+  const mode = tr.className === 'fshHide' ? '' : 'fshHide';
+  while (tr && !tr.children[0].hasAttribute('bgcolor')) {
+    tr.className = mode;
+    tr = tr.nextElementSibling;
+  }
+}
+
 const classEvts = [
   ['sendLink', doFastRecall],
   ['a-reply', replyTo],
+  ['fshBl', collapsible],
 ];
 
 export default function eventHandlers() {
