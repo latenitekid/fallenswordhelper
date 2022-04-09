@@ -1,7 +1,6 @@
 import calf from '../../../support/calf';
 import createButton from '../../../common/cElement/createButton';
 import createDiv from '../../../common/cElement/createDiv';
-import eventHandler5 from '../../../common/eventHandler5';
 import fixTeleport from './fixTeleport';
 import getElementById from '../../../common/getElementById';
 import getValue from '../../../system/getValue';
@@ -12,6 +11,7 @@ import makeToggleBtn from './makeToggleBtn';
 import on from '../../../common/on';
 import onclick from '../../../common/onclick';
 import openQuickBuffById from '../../../common/openQuickBuffById';
+import partial from '../../../common/partial';
 import playerId from '../../../common/playerId';
 import setText from '../../../dom/setText';
 import setValue from '../../../system/setValue';
@@ -24,15 +24,15 @@ import {
   worldUrl,
 } from '../../../support/constants';
 
-let buttonContainer;
-let realmLvl;
-let yourLvl;
-let formGroup;
-let quickBuff;
-let realmMap;
-let ufsgMap;
-let soundCheck;
-let huntCheck;
+let buttonContainer = 0;
+let realmLvl = 0;
+let yourLvl = 0;
+let formGroup = 0;
+let quickBuff = 0;
+let realmMap = 0;
+let ufsgMap = 0;
+let soundCheck = 0;
+let huntCheck = 0;
 
 function doFormGroup(target) {
   hideQTip(target);
@@ -161,9 +161,22 @@ const clickHdl = [
   [(target) => target === ufsgMap, openUfsgMap],
 ];
 
+function handleEvent(evtAry, evt) {
+  const { target } = evt;
+  const hdl = evtAry.find(([f]) => f(target));
+  if (hdl) {
+    target.blur();
+    hdl[1](target);
+  }
+}
+
+function genericHandler(evtAry) {
+  return partial(handleEvent, evtAry);
+}
+
 function setupHandlers() {
-  onclick(buttonContainer, eventHandler5(clickHdl));
-  on(buttonContainer, 'change', eventHandler5(changeHdl));
+  onclick(buttonContainer, genericHandler(clickHdl));
+  on(buttonContainer, 'change', genericHandler(changeHdl));
 }
 
 function injectButtons() {
