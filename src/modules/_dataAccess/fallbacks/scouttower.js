@@ -28,9 +28,9 @@ function calcCd(e) {
 }
 
 function creature(e) {
-  const mobImg = e[0].cells[0].children[0];
+  const [mobImg] = e[0].cells[0].children;
   return {
-    base_id: Number(mobImg.src.match(/s\/(\w+)\.p/)[1].slice(0, -32)),
+    base_id: Number(mobImg.src.split('/').slice(-1)[0].slice(0, -36)),
     name: mobImg.title,
   };
 }
@@ -58,7 +58,7 @@ function location(e) {
 function contributors(e) {
   const contribs = e[2].cells[0].children;
   if (contribs.length === 1) {
-    const thisRows = dataRows(contribs[0].rows, 3, 0);
+    const thisRows = dataRows(contribs[0], 3, 0);
     return {
       contributors: thisRows.map((r) => ({
         kills: Number(getTextTrim(r.cells[1])),

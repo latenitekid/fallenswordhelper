@@ -14,8 +14,8 @@ import { playerLinkSelector } from '../support/constants';
 import querySelector from '../common/querySelector';
 import setValue from '../system/setValue';
 
-let nowUtc;
-let lastCheckUtc;
+let nowUtc = 0;
+let lastCheckUtc = 0;
 
 function findChatTable(logScreen) {
   if (['Chat', 'Leader'].includes(logScreen)) {
@@ -37,11 +37,7 @@ function typeMap(dateColumn, aRow) {
   const postDateUtc = parseDateAsTimestamp(getTextTrim(aRow.cells[dateColumn]));
   const postAgeMins = (nowUtc - postDateUtc) / (1000 * 60);
   if (!isOldRow(postAgeMins, postDateUtc)) {
-    if (postDateUtc > lastCheckUtc) {
-      rowType = 'new';
-    } else {
-      rowType = 'seen';
-    }
+    rowType = postDateUtc > lastCheckUtc ? 'new' : 'seen';
   }
   return [aRow, rowType];
 }
@@ -81,7 +77,7 @@ function makeRowStyle(logScreen, rowTags) {
 }
 
 function processRows(logScreen, dateColumn, chatTable, cols) {
-  const rowTags = dataRows(chatTable.rows, cols, 0).map(partial(typeMap, dateColumn));
+  const rowTags = dataRows(chatTable, cols, 0).map(partial(typeMap, dateColumn));
   doBuffLinks(logScreen, rowTags);
   const rowStyle = makeRowStyle(logScreen, rowTags);
   if (rowStyle.length) {
