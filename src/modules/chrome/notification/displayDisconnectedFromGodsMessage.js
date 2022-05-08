@@ -3,12 +3,12 @@ import { cmdUrl } from '../../support/constants';
 import getElementById from '../../common/getElementById';
 import hideQTip from '../../common/hideQTip';
 import indexAjaxData from '../../ajax/indexAjaxData';
-import insertHtmlAfterBegin from '../../common/insertHtmlAfterBegin';
+import insertHtmlBeforeEnd from '../../common/insertHtmlBeforeEnd';
 import once from '../../common/once';
 import saveTempleSettings from './saveTempleSettings';
 import sendEvent from '../../analytics/sendEvent';
 
-let helperPrayToGods;
+let helperPrayToGods = 0;
 
 const havePrayedMsg = '<span class="notification-icon"></span>'
   + '<p class="notification-content">'
@@ -39,7 +39,7 @@ async function prayToGods(e) {
 }
 
 export default function displayDisconnectedFromGodsMessage() {
-  insertHtmlAfterBegin(getElementById('notifications'), godsNotification);
+  insertHtmlBeforeEnd(getElementById('notifications'), godsNotification);
   helperPrayToGods = getElementById('helperPrayToGods');
   once(helperPrayToGods, 'click', prayToGods);
 }

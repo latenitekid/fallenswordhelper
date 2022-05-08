@@ -8,7 +8,7 @@ import setValueJSON from '../../system/setValueJSON';
 import { wantedList } from './lists';
 import { wantedListDiv } from './createDivs';
 
-export let wantedListReset;
+export let wantedListReset = 0;
 
 function makeMouseOver(el) {
   return `Target Level:  ${el.lvl
@@ -31,7 +31,7 @@ export function injectWantedList() { // Legacy
   setValueJSON('wantedList', wantedList);
   setInnerHtml('', wantedListDiv);
   const heading = createDiv(
-    { innerHTML: `<a href="${bountyUrl}">Wanted Bounties</a> ` },
+    { innerHTML: `<a class="fshBountyHeader" href="${bountyUrl}">Wanted Bounties</a> ` },
   );
   wantedListReset = createSpan({ className: 'xxsLink', textContent: 'Reset' });
   insertElement(heading, wantedListReset);
