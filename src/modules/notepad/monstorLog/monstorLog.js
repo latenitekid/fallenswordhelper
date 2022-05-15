@@ -1,7 +1,6 @@
 import buildHtml from './buildHtml';
 import calf from '../../support/calf';
 import doSortParams from '../../common/doSortParams';
-import getArrayByClassName from '../../common/getArrayByClassName';
 import getElementById from '../../common/getElementById';
 import hasClass from '../../common/hasClass';
 import jQueryPresent from '../../common/jQueryPresent';
@@ -14,8 +13,8 @@ import setInnerHtml from '../../dom/setInnerHtml';
 import stringSort from '../../system/stringSort';
 import { get, set } from '../../system/idb';
 
-let content;
-let monsterAry;
+let content = 0;
+let monsterAry = 0;
 
 function noMobs() {
   setInnerHtml('<span>No monster information! Please enable entity log '
@@ -125,7 +124,6 @@ function haveJquery(injector) { // jQuery.min
   content = injector || pCC;
   if (!content) { return; }
   get('fsh_monsterLog').then(prepAry);
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }
 
 export default function monstorLog(injector) {

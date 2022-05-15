@@ -1,5 +1,4 @@
 import './combatLog.css';
-import getArrayByClassName from '../../common/getArrayByClassName';
 import getElementById from '../../common/getElementById';
 import jConfirm from '../../common/jConfirm';
 import jQueryNotPresent from '../../common/jQueryNotPresent';
@@ -10,7 +9,7 @@ import setInnerHtml from '../../dom/setInnerHtml';
 import { get, set } from '../../system/idb';
 
 let combatLogs = [];
-let textArea;
+let textArea = 0;
 
 function notepadCopyLog() {
   textArea.focus();
@@ -46,5 +45,4 @@ export default async function combatLog(injector) { // jQuery.min
   if (jQueryNotPresent()) { return; }
   const data = await get('fsh_combatLog');
   gotCombatLog(injector || pCC, data);
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }

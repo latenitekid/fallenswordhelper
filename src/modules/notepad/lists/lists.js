@@ -1,7 +1,6 @@
 import './lists.css';
 import defaults from '../../support/dataObj.json';
 import eventHandler5 from '../../common/eventHandler5';
-import getArrayByClassName from '../../common/getArrayByClassName';
 import getElementById from '../../common/getElementById';
 import getValueJSON from '../../system/getValueJSON';
 import isArray from '../../common/isArray';
@@ -17,7 +16,7 @@ import setInnerHtml from '../../dom/setInnerHtml';
 import setValueJSON from '../../system/setValueJSON';
 import { auctionSearchBlurb, auctionSearchParams } from './assets';
 
-let param;
+let param = 0;
 
 function hasUrl(j) {
   return param.url && param.url[j] !== '';
@@ -121,12 +120,7 @@ function buildNewItem() { // Legacy
 
 function addQuickItem() { // Legacy
   const isArrayOnly = param.fields.length === 0;
-  let newItem = {};
-  if (isArrayOnly) {
-    newItem = getElementById('fshIn0').value;
-  } else {
-    newItem = buildNewItem();
-  }
+  const newItem = isArrayOnly ? getElementById('fshIn0').value : buildNewItem();
   param.currentItems.push(newItem);
   generateManageTable();
 }
@@ -167,7 +161,6 @@ export function injectAuctionSearch(injector) { // Legacy
   param = auctionSearchParams();
   generateManageTable();
   setupEventHandler(content);
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }
 
 export function injectQuickLinkManager(injector) { // Legacy
@@ -192,5 +185,4 @@ export function injectQuickLinkManager(injector) { // Legacy
   };
   generateManageTable();
   setupEventHandler(content);
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }

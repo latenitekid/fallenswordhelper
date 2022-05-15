@@ -3,7 +3,6 @@ import buffList from '../../support/buffObj.json';
 import calf from '../../support/calf';
 import createDocument from '../../system/createDocument';
 import csvSplit from '../../common/csvSplit';
-import getArrayByClassName from '../../common/getArrayByClassName';
 import getElementById from '../../common/getElementById';
 import getText from '../../common/getText';
 import getValue from '../../system/getValue';
@@ -31,13 +30,13 @@ import {
   showPlayerUrl,
 } from '../../support/constants';
 
-let findBuffNicks;
-let findBuffMinCastLevel;
-let onlinePlayers;
-let onlinePlayersSetting;
-export let extraProfile;
-let profilePagesToSearch;
-let profilePagesToSearchProcessed;
+let findBuffNicks = 0;
+let findBuffMinCastLevel = 0;
+let onlinePlayers = 0;
+let onlinePlayersSetting = 0;
+export let extraProfile = 0;
+let profilePagesToSearch = 0;
+let profilePagesToSearchProcessed = 0;
 
 function gotProfile(j, html) {
   parseProfileAndDisplay(html, {
@@ -155,7 +154,8 @@ function parsePlayerLink(el) {
   const { tipped } = el.dataset;
   const lastActivityMinutes = calcLastActMins(tipped);
   // check if they are high enough level to cast the buff
-  const vlevel = Number(/VL:.+?(\d+)/.exec(tipped)[1]);
+  const matches = /VL:.+?(?<vl>\d+)/.exec(tipped);
+  const vlevel = Number(matches.groups.vl);
   const minPlayerVirtualLevel = calcMinLvl();
   if (isValidPlayer(lastActivityMinutes, vlevel, minPlayerVirtualLevel)) {
     addPlayerToSearchList(el.href, getText(el));
@@ -270,7 +270,6 @@ export function injectFindBuffs(injector) { // Legacy
   getBufferProgress();
   setupFindEvent(findBuffsStart);
   setupClearEvent();
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }
 
 export function injectFindOther(injector) { // Native - Bad
@@ -280,5 +279,4 @@ export function injectFindOther(injector) { // Native - Bad
   getBufferProgress();
   setupFindEvent(findOtherStart);
   setupClearEvent();
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }

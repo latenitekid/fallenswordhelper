@@ -4,7 +4,6 @@ import createDocument from '../../system/createDocument';
 import doRefreshButton from './doRefreshButton';
 import { doTable } from './doTable';
 import filterHeaderOnlinePlayers from './filterHeaderOnlinePlayers';
-import getArrayByClassName from '../../common/getArrayByClassName';
 import jQueryNotPresent from '../../common/jQueryNotPresent';
 import loadDataTables from '../../common/loadDataTables';
 import { now } from '../../support/now';
@@ -16,10 +15,10 @@ import resetEvt from './resetEvt';
 import setValue from '../../system/setValue';
 import { get, set } from '../../system/idb';
 
-let context;
-let onlinePlayers;
-let onlinePages;
-let lastPage;
+let context = 0;
+let onlinePlayers = 0;
+let onlinePages = 0;
+let lastPage = 0;
 
 function gotOnlinePlayers(value) { // jQuery
   onlinePlayers = value || {};
@@ -62,7 +61,8 @@ function processTheRows(doc, input) {
 }
 
 function getLastPage(input) {
-  return parseInt(input.parent().text().match(/(\d+)/g)[0], 10);
+  const matches = input.parent().text().match(/(?<page>\d+)/);
+  return parseInt(matches.groups.page, 10);
 }
 
 function getOtherPages(callback, input) {
@@ -114,11 +114,6 @@ function injectOnlinePlayersNew() { // jQuery
 
 export default function injectOnlinePlayers(content) { // jQuery
   if (jQueryNotPresent()) { return; }
-  if (content) {
-    context = $(content);
-  } else {
-    context = $('#pCC');
-  }
+  context = content ? $(content) : $('#pCC');
   loadDataTables().then(injectOnlinePlayersNew);
-  getArrayByClassName('ui-dialog-titlebar-close').forEach((e) => e.blur());
 }
