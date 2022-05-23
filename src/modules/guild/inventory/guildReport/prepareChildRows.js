@@ -5,9 +5,9 @@ import partial from '../../../common/partial';
 import potReport from './potReport/potReport';
 import querySelectorAll from '../../../common/querySelectorAll';
 
-let nodeArray;
-let nodeList;
-let potObj;
+let nodeArray = 0;
+let nodeList = 0;
+let potObj = 0;
 
 function doPaintChild(inject, localCounter) {
   const el = nodeList[localCounter];
@@ -27,7 +27,7 @@ function doSpan(el) {
 }
 
 function finishSpan() {
-  batch([5, 3, nodeArray, 0, doPaintChild, partial(potReport, potObj)]);
+  batch([3, nodeArray, 0, doPaintChild, partial(potReport, potObj)]);
 }
 
 export default function prepareChildRows() {
@@ -35,5 +35,5 @@ export default function prepareChildRows() {
     + 'tr:not(.fshHide) td:nth-of-type(3n)');
   potObj = {};
   nodeArray = [];
-  batch([5, 3, nodeList, 0, doSpan, finishSpan]);
+  batch([3, nodeList, 0, doSpan, finishSpan]);
 }

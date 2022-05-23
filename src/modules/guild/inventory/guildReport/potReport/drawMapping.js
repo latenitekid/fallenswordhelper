@@ -16,8 +16,8 @@ import setInnerHtml from '../../../../dom/setInnerHtml';
 import setText from '../../../../dom/setText';
 import task from '../../../../support/task';
 
-let mapping;
-let selectRowTmp;
+let mapping = 0;
+let selectRowTmp = 0;
 
 function getRow() {
   const rowTmp = createTr();
@@ -97,7 +97,6 @@ export function drawMapping(potOpts) {
   on(mapping, 'mousedown', partial(renderDropDown, potOpts.myMap));
   task(3, batch, [
     [
-      5,
       3,
       entries(potOpts.myMap),
       0,
