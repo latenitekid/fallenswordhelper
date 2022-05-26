@@ -66,7 +66,7 @@ function doFilter({ detail: [currentFolder, wantsPerfect] }) {
     itemGrid = createDiv({ className: 'fshCraftForgeGrid' });
     insertElementAfterBegin(thisItemTable.parentNode, itemGrid);
     hideElement(thisItemTable);
-    task(3, batch, [[5, 3, wh, 0, partial(insertItem, currentFolder, wantsPerfect)]]);
+    task(3, batch, [[3, wh, 0, partial(insertItem, currentFolder, wantsPerfect)]]);
   } else {
     updateVisibility(wh, currentFolder, wantsPerfect);
   }
