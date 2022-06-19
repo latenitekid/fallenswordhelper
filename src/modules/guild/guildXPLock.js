@@ -3,14 +3,8 @@ import insertHtmlBeforeEnd from '../common/insertHtmlBeforeEnd';
 import querySelector from '../common/querySelector';
 
 function getIntFromRegExp(theText, rxSearch) {
-  let result;
   const matches = theText.replace(/,/g, '').match(rxSearch);
-  if (matches) {
-    result = parseInt(matches[1], 10);
-  } else {
-    result = 0;
-  }
-  return result;
+  return matches ? parseInt(matches[1], 10) : 0;
 }
 
 function mightBePositive(actualXP, xpLockXP) {
@@ -21,8 +15,8 @@ function mightBePositive(actualXP, xpLockXP) {
 
 function injectLock(xpLock) {
   const xpLockmouseover = xpLock.dataset.tipped;
-  const xpLockXP = getIntFromRegExp(xpLockmouseover, /XP Lock: <b>(\d*)/);
-  const actualXP = getIntFromRegExp(xpLockmouseover, /XP: <b>(\d*)/);
+  const xpLockXP = getIntFromRegExp(xpLockmouseover, /XP Lock: <b>(?<lockXp>\d*)/);
+  const actualXP = getIntFromRegExp(xpLockmouseover, /XP: <b>(?<realXp>\d*)/);
   insertHtmlBeforeEnd(
     xpLock.parentNode.nextElementSibling,
     ` (<b>${mightBePositive(actualXP, xpLockXP)}</b>)`,
