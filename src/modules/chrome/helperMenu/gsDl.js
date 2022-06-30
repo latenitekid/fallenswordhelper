@@ -1,5 +1,6 @@
 import clickThis from '../../common/clickThis';
 import createAnchor from '../../common/cElement/createAnchor';
+import currentGuildId from '../../common/currentGuildId';
 import guildStore from '../../_dataAccess/export/guildStore';
 import insertElement from '../../common/insertElement';
 
@@ -40,7 +41,7 @@ const toCsv = (json) => json.items.map(fields).join('\n');
 
 function downloadCsv(csv) {
   const href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-  const a = createAnchor({
+  const a = createAnchor({ // skipcq: JS-C1002
     download: 'gs_export.csv',
     href,
     style: { display: 'none' },
@@ -52,6 +53,7 @@ function downloadCsv(csv) {
 }
 
 export default async function gsDl() {
+  if (!currentGuildId()) return;
   const json = await guildStore();
   downloadCsv(`${header}${toCsv(json)}`);
 }
