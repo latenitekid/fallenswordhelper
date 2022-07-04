@@ -6,6 +6,7 @@
   import NotFound from './NotFound.svelte';
   import VirtualScroll from 'svelte-virtual-scroll-list';
   import alpha from '../../../common/alpha';
+  import getHeightGuess from '../getHeightGuess';
   import getValueJSON from '../../../system/getValueJSON';
   import uniq from '../../../common/uniq';
 
@@ -61,7 +62,7 @@
   <VirtualScroll
     data={theStuff}
     key="id"
-    keeps="{Math.floor(window.screen.height / 10)}"
+    keeps="{Math.floor(getHeightGuess() / 10)}"
     estimateSize="14"
     let:data={item}
   >
