@@ -1,8 +1,11 @@
-import calf from '../../../support/calf';
-import isArray from '../../../common/isArray';
+import calf from '../../../../support/calf';
+import isArray from '../../../../common/isArray';
 
-export let huntingBuffs;
-export let huntingBuffsName;
+let huntingBuffs = 0;
+let huntingBuffsName = '';
+
+export const getHuntingBuffs = () => huntingBuffs;
+export const getHuntingBuffsName = () => huntingBuffsName;
 
 export function setCurrentBuffList() {
   const lookup = [null,

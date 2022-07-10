@@ -4,13 +4,13 @@ import calf from '../../support/calf';
 import createDocument from '../../system/createDocument';
 import csvSplit from '../../common/csvSplit';
 import getElementById from '../../common/getElementById';
+import { getPcc } from '../../support/layout';
 import getText from '../../common/getText';
 import getValue from '../../system/getValue';
 import guildManage from '../../ajax/guildManage';
 import jQueryNotPresent from '../../common/jQueryNotPresent';
 import onclick from '../../common/onclick';
 import onlinePlayersPage from '../../ajax/onlinePlayersPage';
-import { pCC } from '../../support/layout';
 import pageLayout from './pageLayout';
 import parseProfileAndDisplay from './parseProfileAndDisplay';
 import partial from '../../common/partial';
@@ -28,13 +28,14 @@ import {
   lastActivityRE,
   profileUrl,
   showPlayerUrl,
+  vlRe,
 } from '../../support/constants';
 
 let findBuffNicks = 0;
 let findBuffMinCastLevel = 0;
 let onlinePlayers = 0;
 let onlinePlayersSetting = 0;
-export let extraProfile = 0;
+let extraProfile = 0;
 let profilePagesToSearch = 0;
 let profilePagesToSearchProcessed = 0;
 
@@ -154,7 +155,7 @@ function parsePlayerLink(el) {
   const { tipped } = el.dataset;
   const lastActivityMinutes = calcLastActMins(tipped);
   // check if they are high enough level to cast the buff
-  const matches = /VL:.+?(?<vl>\d+)/.exec(tipped);
+  const matches = vlRe.exec(tipped);
   const vlevel = Number(matches.groups.vl);
   const minPlayerVirtualLevel = calcMinLvl();
   if (isValidPlayer(lastActivityMinutes, vlevel, minPlayerVirtualLevel)) {
@@ -261,7 +262,7 @@ function setupClearEvent() {
 }
 
 export function injectFindBuffs(injector) { // Legacy
-  const content = injector || pCC;
+  const content = injector || getPcc();
   calf.sortBy = 'name';
   calf.sortAsc = true;
   buffList.sort(stringSort);
@@ -273,7 +274,7 @@ export function injectFindBuffs(injector) { // Legacy
 }
 
 export function injectFindOther(injector) { // Native - Bad
-  const content = injector || pCC;
+  const content = injector || getPcc();
   getExtraProfile();
   setInnerHtml(pageLayout(otherCustom, extraProfile), content);
   getBufferProgress();

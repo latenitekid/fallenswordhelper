@@ -1,13 +1,13 @@
 import daRankPosition from '../../_dataAccess/daRankPosition';
+import { getPcc } from '../../support/layout';
 import getValue from '../../system/getValue';
 import insertElementBefore from '../../common/insertElementBefore';
 import onclick from '../../common/onclick';
-import { pCC } from '../../support/layout';
 import playerName from '../../common/playerName';
 import sendEvent from '../../analytics/sendEvent';
 import toLowerCase from '../../common/toLowerCase';
 
-let characterRow;
+let characterRow = 0;
 
 const upOrDown = (evt) => ['Up', 'Down'].includes(evt.target.value);
 
@@ -28,7 +28,7 @@ function getPxScroll(val) {
 }
 
 function shuffleRows(evt, thisRankRow, targetRowNum) {
-  const matchRankId = evt.target.getAttribute('onclick').match(/rank_id=(\d+)/);
+  const matchRankId = evt.target.getAttribute('onclick').match(/rank_id=(?<rankId>\d+)/);
   daRankPosition(toLowerCase(evt.target.value), matchRankId[1]);
   const injectRow = thisRankRow.parentNode.rows[targetRowNum];
   insertElementBefore(thisRankRow, injectRow);
@@ -52,7 +52,7 @@ function ajaxifyRankControls(evt) {
 
 export function doButtons() {
   if (characterRow && getValue('ajaxifyRankControls')) {
-    onclick(pCC, ajaxifyRankControls, true);
+    onclick(getPcc(), ajaxifyRankControls, true);
   }
 }
 

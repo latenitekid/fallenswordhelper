@@ -6,23 +6,24 @@ import getElementById from '../../common/getElementById';
 import { injectBountyList } from './injectBountyList';
 import { injectWantedList } from './injectWantedList';
 import querySelector from '../../common/querySelector';
-import { activeBountyListPosted, getActiveBountyList } from './lists';
+import { getActiveBountyList, getActiveBountyListPosted } from './lists';
 
-let curPage;
-let maxPage;
+let curPage = 0;
+let maxPage = 0;
 
 function getWantedBountyList(doc) {
   const page = querySelector('#pCC input[name="page"]', doc);
   if (!page) { return; }
   curPage = Number(page.value);
-  maxPage = Number(page.parentNode.innerHTML.match(/of&nbsp;(\d*)/)[1]);
+  const maxMatch = page.parentNode.innerHTML.match(/of&nbsp;(?<of>\d*)/);
+  maxPage = Number(maxMatch[1]);
   const activeTable = getElementById('bounty-info', doc).parentNode.parentNode
     .nextElementSibling.children[0].children[0];
   if (activeTable) { findTarget(activeTable); }
 }
 
 function hazActiveBountyList(doc) {
-  if (calf.enableActiveBountyList && !activeBountyListPosted) {
+  if (calf.enableActiveBountyList && !getActiveBountyListPosted()) {
     getActiveBountyList(doc);
     injectBountyList();
   }

@@ -1,6 +1,6 @@
+import { getPcc } from '../../support/layout';
 import getRelicList from './getRelicList';
 import getValue from '../../system/getValue';
-import { pCC } from '../../support/layout';
 import padZ from '../../system/padZ';
 import partial from '../../common/partial';
 import setInnerHtml from '../../dom/setInnerHtml';
@@ -41,8 +41,8 @@ function allAttribs(attribs) {
 
 function formatTime(time) {
   if (!time) { return ''; }
-  const t = splitTime(time);
-  return `${padZ(t[0])}d ${padZ(t[1])}h ${padZ(t[2])}m ${padZ(t[3])}s`;
+  const [day, hour, min, sec] = splitTime(time);
+  return `${padZ(day)}d ${padZ(hour)}h ${padZ(min)}m ${padZ(sec)}s`;
 }
 
 function makeRow(relic) {
@@ -87,11 +87,11 @@ function makeTable(thisRelicList) {
 
 function processRelicList(thisRelicList) {
   thisRelicList.sort((a, b) => a.location.realm.min_level - b.location.realm.min_level);
-  setInnerHtml(makeTable(thisRelicList), pCC);
+  setInnerHtml(makeTable(thisRelicList), getPcc());
 }
 
 export default function reliclist() {
   if (!getValue('betaOptIn')) { return; }
-  setInnerHtml('Loading...', pCC);
+  setInnerHtml('Loading...', getPcc());
   getRelicList().then(processRelicList);
 }

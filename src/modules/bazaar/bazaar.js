@@ -3,16 +3,17 @@ import daBazaarBuy from '../_dataAccess/daBazaarBuy';
 import getArrayByTagName from '../common/getArrayByTagName';
 import getElementById from '../common/getElementById';
 import getElementsByTagName from '../common/getElementsByTagName';
+import { getPcc } from '../support/layout';
 import getText from '../common/getText';
 import hasClass from '../common/hasClass';
 import insertElement from '../common/insertElement';
 import insertHtmlBeforeEnd from '../common/insertHtmlBeforeEnd';
+import { itmRe } from '../support/constants';
 import jQueryNotPresent from '../common/jQueryNotPresent';
 import jsonFail from '../common/jsonFail';
 import on from '../common/on';
 import onclick from '../common/onclick';
 import outputResult from '../common/outputResult';
-import { pCC } from '../support/layout';
 import querySelector from '../common/querySelector';
 import setInnerHtml from '../dom/setInnerHtml';
 import setText from '../dom/setText';
@@ -36,13 +37,13 @@ let bazaarTable = '<table class="fshBazaar"><tr><td colspan="5">Select an item t
 const bazaarItem = '<span class="bazaarButton tip-dynamic" style="background-image: '
   + 'url(\'@src@\');" itemid="@itemid@" data-tipped="@tipped@"></span>';
 
-let itemId;
-let inputBuyAmount;
-let tdSelected;
-let spanWarning;
-let spanQuantity;
-let spanResultLabel;
-let olResults;
+let itemId = 0;
+let inputBuyAmount = 0;
+let tdSelected = 0;
+let spanWarning = 0;
+let spanQuantity = 0;
+let spanResultLabel = 0;
+let olResults = 0;
 
 function testBuyAmount() {
   return testQuant(inputBuyAmount.value);
@@ -93,10 +94,11 @@ async function buy() { // jQuery.min
 function doMiniatures(el, i) {
   const item = el.children[0];
   const { tipped } = item.dataset;
+  const itemMatch = tipped.match(itmRe);
   bazaarTable = bazaarTable
     .replace(`@${i}@`, bazaarItem)
     .replace('@src@', item.getAttribute('src'))
-    .replace('@itemid@', tipped.match(/\?item_id=(\d+)/)[1])
+    .replace('@itemid@', itemMatch[1])
     .replace('@tipped@', tipped);
 }
 
@@ -118,9 +120,9 @@ function evtHandlers() {
 
 export default function bazaar() {
   if (jQueryNotPresent()) { return; }
-  const pbImg = getElementsByTagName('img', pCC)[0];
+  const pbImg = getElementsByTagName('img', getPcc())[0];
   pbImg.className = 'fshFloatLeft';
-  getArrayByTagName('a', pCC).forEach(doMiniatures);
+  getArrayByTagName('a', getPcc()).forEach(doMiniatures);
   bazaarTable = bazaarTable.replace(/@\d@/g, '');
   insertHtmlBeforeEnd(pbImg.parentNode, bazaarTable);
   evtHandlers();

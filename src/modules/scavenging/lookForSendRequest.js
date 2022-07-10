@@ -2,20 +2,20 @@ import alpha from '../common/alpha';
 import createDiv from '../common/cElement/createDiv';
 import entries from '../common/entries';
 import getElementById from '../common/getElementById';
+import { getPcc } from '../support/layout';
 import insertElement from '../common/insertElement';
 import isFunction from '../common/isFunction';
-import { pCC } from '../support/layout';
 import setInnerHtml from '../dom/setInnerHtml';
 import setLastScav from './setLastScav';
 
 /* global sendRequest:true */
 
-let fshSummary;
+let fshSummary = 0;
 
 function getSummary() {
   if (!fshSummary) {
     fshSummary = createDiv();
-    insertElement(pCC, fshSummary);
+    insertElement(getPcc(), fshSummary);
   }
   setInnerHtml('', fshSummary);
   return fshSummary;
@@ -38,7 +38,7 @@ function getDefeats(report) {
 }
 
 function makeHash(acc, curr) {
-  const itemName = curr.match(/>([^<]+)</)[1];
+  const itemName = curr.match(/>(?<name>[^<]+)</)[1];
   acc[itemName] = (acc[itemName] || 0) + 1;
   return acc;
 }

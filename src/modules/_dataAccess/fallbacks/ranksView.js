@@ -1,19 +1,24 @@
 import closestTr from '../../common/closestTr';
 import createDocument from '../../system/createDocument';
 import currentGuildId from '../../common/currentGuildId';
+import { getNowSecs } from '../../support/now';
 import getTextTrim from '../../common/getTextTrim';
 import guildManage from '../../ajax/guildManage';
-import { nowSecs } from '../../support/now';
 import partial from '../../common/partial';
 import querySelectorArray from '../../common/querySelectorArray';
 import uniq from '../../common/uniq';
-import { lastActivityRE, playerIDRE, playerLinkSelector } from '../../support/constants';
+import {
+  lastActivityRE,
+  playerIDRE,
+  playerLinkSelector,
+  stamRe,
+  vlRe,
+} from '../../support/constants';
 
 const guildXp = (el) => Number(getTextTrim(closestTr(el).cells[4]).replaceAll(',', ''));
 const playerId = (el) => Number(playerIDRE.exec(el.href)[1]);
-const level = (tipped) => Number(/Level:.+?(\d+)/.exec(tipped)[1]);
 const rank = (el) => getTextTrim(closestTr(el).cells[3]);
-const vl = (tipped) => Number(/VL:.+?(\d+)/.exec(tipped)[1]);
+const vl = (tipped) => Number(vlRe.exec(tipped)[1]);
 
 function lastActivityTimestamp(tipped) {
   const lastActivity = lastActivityRE.exec(tipped);
@@ -21,7 +26,7 @@ function lastActivityTimestamp(tipped) {
   const hours = Number(lastActivity[2]) + days * 24;
   const mins = Number(lastActivity[3]) + hours * 60;
   const secs = Number(lastActivity[4]) + mins * 60;
-  return nowSecs - secs;
+  return getNowSecs() - secs;
 }
 
 function fromElement(el) {
@@ -34,11 +39,12 @@ function fromElement(el) {
 }
 
 function fromTipped(tipped) {
-  const mo = tipped.match(/Stamina:<\/td><td>(\d{1,12}) \/ (\d{1,12})<\/td>/);
+  const mo = tipped.match(stamRe);
+  const ml = /Level:.+?(?<l>\d+)/.exec(tipped);
   return {
     current_stamina: Number(mo[1]),
     last_activity: lastActivityTimestamp(tipped),
-    level: level(tipped),
+    level: Number(ml[1]),
     max_stamina: Number(mo[2]),
     vl: vl(tipped),
   };

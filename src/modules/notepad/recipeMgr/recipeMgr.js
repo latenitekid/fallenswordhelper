@@ -1,22 +1,22 @@
 import doSortParams from '../../common/doSortParams';
 import generateRecipeTable from './generateRecipeTable';
 import { get } from '../../system/idb';
+import { getPcc } from '../../support/layout';
 import jQueryNotPresent from '../../common/jQueryNotPresent';
 import onclick from '../../common/onclick';
-import { pCC } from '../../support/layout';
 import partial from '../../common/partial';
 import stringSort from '../../system/stringSort';
 import {
+  getOutput,
+  getRecipebook,
   gotRecipeBook,
-  output,
   parseInventingStart,
-  recipebook,
 } from './parseInventing';
 
 function sortRecipeTable(evt) { // Legacy
   doSortParams(evt.target);
-  recipebook.recipe.sort(stringSort);
-  generateRecipeTable(output, recipebook);
+  getRecipebook().recipe.sort(stringSort);
+  generateRecipeTable(getOutput(), getRecipebook());
 }
 
 function rmEvtHdl(evt) {
@@ -30,7 +30,7 @@ function rmEvtHdl(evt) {
 
 export default function recipeMgr(injector) { // jQuery.min
   if (jQueryNotPresent()) { return; }
-  const content = injector || pCC;
+  const content = injector || getPcc();
   get('fsh_recipeBook').then(partial(gotRecipeBook, content));
   onclick(content, rmEvtHdl);
 }
