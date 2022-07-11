@@ -3,20 +3,21 @@ import daBazaarBuy from '../_dataAccess/daBazaarBuy';
 import getArrayByTagName from '../common/getArrayByTagName';
 import getElementById from '../common/getElementById';
 import getElementsByTagName from '../common/getElementsByTagName';
-import { getPcc } from '../support/layout';
 import getText from '../common/getText';
 import hasClass from '../common/hasClass';
 import insertElement from '../common/insertElement';
 import insertHtmlBeforeEnd from '../common/insertHtmlBeforeEnd';
-import { itmRe } from '../support/constants';
 import jQueryNotPresent from '../common/jQueryNotPresent';
 import jsonFail from '../common/jsonFail';
 import on from '../common/on';
 import onclick from '../common/onclick';
 import outputResult from '../common/outputResult';
 import querySelector from '../common/querySelector';
+import regExpGroups from '../common/regExpGroups';
 import setInnerHtml from '../dom/setInnerHtml';
 import setText from '../dom/setText';
+import { fetchItemRe } from '../support/constants';
+import { getPcc } from '../support/layout';
 import testQuant from '../system/testQuant';
 
 let bazaarTable = '<table class="fshBazaar"><tr><td colspan="5">Select an item to quick-buy:'
@@ -94,11 +95,11 @@ async function buy() { // jQuery.min
 function doMiniatures(el, i) {
   const item = el.children[0];
   const { tipped } = item.dataset;
-  const itemMatch = tipped.match(itmRe);
+  const { itemId: itmId } = regExpGroups(fetchItemRe, tipped);
   bazaarTable = bazaarTable
     .replace(`@${i}@`, bazaarItem)
     .replace('@src@', item.getAttribute('src'))
-    .replace('@itemid@', itemMatch[1])
+    .replace('@itemid@', itmId)
     .replace('@tipped@', tipped);
 }
 

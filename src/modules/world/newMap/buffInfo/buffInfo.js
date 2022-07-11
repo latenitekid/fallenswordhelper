@@ -1,5 +1,11 @@
-import buffInfoDiv from './buffInfoDiv';
 import calf from '../../../support/calf';
+import {
+  defPlayerBuffs,
+  defPlayerUpdate,
+  defTeleport,
+} from '../../../support/constants';
+import setValue from '../../../system/setValue';
+import buffInfoDiv from './buffInfoDiv';
 import doCa from './doCa';
 import doDbl from './doDbl';
 import doDeathDealer from './doDeathDealer';
@@ -8,22 +14,16 @@ import getBuff from './getBuff';
 import getCooldown from './getCooldown';
 import impIconColour from './impIconColour';
 import impWarning from './impWarning';
-import setValue from '../../../system/setValue';
 import titanKs from './titanKs';
-import {
-  defPlayerBuffs,
-  defPlayerUpdate,
-  defTeleport,
-} from '../../../support/constants';
 import { doCountdown, tpCooldown } from './tpCooldown';
 
-let dd;
-let dbl;
-let ca;
-let imp;
-let cd;
-let titanActive;
-let ks;
+let dd = 0;
+let dbl = 0;
+let ca = 0;
+let imp = 0;
+let cd = 0;
+let titanActive = 0;
+let ks = 0;
 
 function initVars() {
   dd = getBuff('Death Dealer');

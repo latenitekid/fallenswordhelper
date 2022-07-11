@@ -1,14 +1,15 @@
 import './buffmarket.css';
-import createDocument from '../system/createDocument';
 import daBuffMarketBuy from '../_dataAccess/daBuffMarketBuy';
-import fromEntries from '../common/fromEntries';
-import { getPcc } from '../support/layout';
 import indexAjaxData from '../ajax/indexAjaxData';
+import fromEntries from '../common/fromEntries';
 import on from '../common/on';
 import onclick from '../common/onclick';
 import partial from '../common/partial';
 import querySelector from '../common/querySelector';
+import regExpFirstCapture from '../common/regExpFirstCapture';
 import setInnerHtml from '../dom/setInnerHtml';
+import { getPcc } from '../support/layout';
+import createDocument from '../system/createDocument';
 
 async function search(injector, e) {
   e.preventDefault();
@@ -26,7 +27,7 @@ function injectSearch(buffResults) {
 
 async function interceptBuy(e) {
   e.stopPropagation();
-  const packageId = e.target.getAttribute('onclick').match(/id=(?<id>[0-9]+)/)?.[1];
+  const packageId = regExpFirstCapture(/id=(?<id>\d+)/, e.target.getAttribute('onclick'));
   if (packageId) {
     const actionRow = e.target.parentNode;
     actionRow.className = 'fshActionRow';

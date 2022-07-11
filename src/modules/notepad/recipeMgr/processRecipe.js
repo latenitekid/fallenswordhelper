@@ -1,10 +1,11 @@
-import createDocument from '../../system/createDocument';
 import getArrayByTagName from '../../common/getArrayByTagName';
 import getElementById from '../../common/getElementById';
 import getText from '../../common/getText';
 import insertHtmlBeforeEnd from '../../common/insertHtmlBeforeEnd';
-import { itmRe } from '../../support/constants';
 import partial from '../../common/partial';
+import regExpGroups from '../../common/regExpGroups';
+import { fetchItemRe } from '../../support/constants';
+import createDocument from '../../system/createDocument';
 
 function getTblCells(doc) {
   return getArrayByTagName('td', getElementById('pCC', doc));
@@ -15,16 +16,12 @@ function background(bgGif, el) {
   return bg && bg.includes(bgGif);
 }
 
-function splitMouseover(img) {
-  const mouseOver = img.dataset.tipped;
-  return mouseOver.match(itmRe);
-}
-
-function buildResult(img, mouseOverRX) {
+function buildResult(img) {
+  const { itemId, vcode } = regExpGroups(fetchItemRe, img.dataset.tipped);
   return {
     img: img.getAttribute('src'),
-    id: mouseOverRX[1],
-    verify: mouseOverRX[3],
+    id: itemId,
+    verify: vcode,
   };
 }
 
@@ -40,8 +37,7 @@ function hasAmounts(result, amounts) {
 
 function attribs(el) {
   const img = el.children[0].children[0];
-  const mouseOverRX = splitMouseover(img);
-  const result = buildResult(img, mouseOverRX);
+  const result = buildResult(img);
   hasAmounts(result, el.parentNode.nextElementSibling);
   return result;
 }

@@ -1,19 +1,21 @@
-import compressHistory from './compressHistory';
 import createStyle from '../common/cElement/createStyle';
 import currentGuildId from '../common/currentGuildId';
 import getElementsByTagName from '../common/getElementsByTagName';
-import { getPcc } from '../support/layout';
-import getUrlParameter from '../system/getUrlParameter';
-import getValue from '../system/getValue';
 import insertElement from '../common/insertElement';
-import querySelectorArray from '../common/querySelectorArray';
-import { defTable, lastActivityRE, vlRe } from '../support/constants';
+import lastActivity from '../common/lastActivity';
 import {
   getLowerGvGLevel,
   getLowerPvpLevel,
   getUpperGvgLevel,
   getUpperPvpLevel,
 } from '../common/levelHighlight';
+import querySelectorArray from '../common/querySelectorArray';
+import regExpFirstCapture from '../common/regExpFirstCapture';
+import { defTable, vlRe } from '../support/constants';
+import { getPcc } from '../support/layout';
+import getUrlParameter from '../system/getUrlParameter';
+import getValue from '../system/getValue';
+import compressHistory from './compressHistory';
 
 let highlightPlayersNearMyLvl = 0;
 let highlightGvGPlayersNearMyLvl = 0;
@@ -30,9 +32,9 @@ function isGvgTarget(vlevel) {
     && vlevel <= getUpperGvgLevel();
 }
 
-const getLastActivity = (a) => [a, lastActivityRE.exec(a.dataset.tipped)[1]];
+const getLastActivity = (a) => [a, lastActivity(a.dataset.tipped).days];
 const recentActivity = ([, lastActDays]) => lastActDays < 7;
-const getVLevel = ([a]) => [a, Number(vlRe.exec(a.dataset.tipped)[1])];
+const getVLevel = ([a]) => [a, Number(regExpFirstCapture(vlRe, a.dataset.tipped))];
 const getFlags = ([a, vlevel]) => [
   a.parentNode.parentNode.rowIndex,
   isPvpTarget(vlevel),

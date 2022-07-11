@@ -1,13 +1,13 @@
+import sendEvent from '../../../../analytics/sendEvent';
 import createDiv from '../../../../common/cElement/createDiv';
 import insertElement from '../../../../common/insertElement';
 import keys from '../../../../common/keys';
 import once from '../../../../common/once';
 import partial from '../../../../common/partial';
-import sendEvent from '../../../../analytics/sendEvent';
 import setInnerHtml from '../../../../dom/setInnerHtml';
 import sortKeys from './sortKeys';
 
-let inventory;
+let inventory = 0;
 
 function pivotPotObj(potOpts, potObj, acc, pot) {
   if (potOpts.myMap[pot] !== 'Ignore') {
@@ -22,18 +22,16 @@ function pivotPotObj(potOpts, potObj, acc, pot) {
 
 function perc2color(percent) {
   const perc = Math.max(Math.min(percent, 100), 0);
-  let r;
-  let g;
-  const b = 0;
+  let red = 255;
+  let green = 255;
+  const blue = 0;
   if (perc < 50) {
-    r = 255;
-    g = Math.round(5.1 * perc);
+    green = Math.round(5.1 * perc);
   } else {
-    g = 255;
-    r = Math.round(510 - 5.10 * perc);
+    red = Math.round(510 - 5.10 * perc);
   }
-  const h = r * 0x10000 + g * 0x100 + b;
-  const colour = (`000000${h.toString(16)}`).slice(-6);
+  const rgb = red * 0x10000 + green * 0x100 + blue;
+  const colour = (`000000${rgb.toString(16)}`).slice(-6);
   return `#${colour}`;
 }
 

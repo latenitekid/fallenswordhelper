@@ -1,11 +1,11 @@
 import createSpan from '../../../common/cElement/createSpan';
 import insertElement from '../../../common/insertElement';
 import insertTextBeforeEnd from '../../../common/insertTextBeforeEnd';
-import setText from '../../../dom/setText';
 import toggleForce from '../../../common/toggleForce';
+import setText from '../../../dom/setText';
 
-let caDiv;
-let caSpan;
+let caDiv = 0;
+let caSpan = 0;
 
 function initCaDiv(containerDiv) {
   // eslint-disable-next-line prefer-destructuring

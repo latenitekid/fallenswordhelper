@@ -1,11 +1,11 @@
 import createSpan from '../../../common/cElement/createSpan';
 import insertElement from '../../../common/insertElement';
 import insertTextBeforeEnd from '../../../common/insertTextBeforeEnd';
-import setText from '../../../dom/setText';
 import toggleForce from '../../../common/toggleForce';
+import setText from '../../../dom/setText';
 
-let dblDiv;
-let dblSpan;
+let dblDiv = 0;
+let dblSpan = 0;
 
 function initDblDiv(containerDiv) {
   // eslint-disable-next-line prefer-destructuring

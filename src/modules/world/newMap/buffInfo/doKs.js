@@ -1,11 +1,11 @@
 import createSpan from '../../../common/cElement/createSpan';
 import insertElement from '../../../common/insertElement';
-import setText from '../../../dom/setText';
 import setTextCommas from '../../../common/setTextCommas';
 import toggleForce from '../../../common/toggleForce';
+import setText from '../../../dom/setText';
 
-let ksDiv;
-let killStreakSpan;
+let ksDiv = 0;
+let killStreakSpan = 0;
 
 function initKsDiv(containerDiv) {
   // eslint-disable-next-line prefer-destructuring

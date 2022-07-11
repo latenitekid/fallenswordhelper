@@ -1,18 +1,17 @@
 import combatView from '../../ajax/combatView';
-import createDocument from '../../system/createDocument';
+import sendEvent from '../../analytics/sendEvent';
 import getElementById from '../../common/getElementById';
 import getText from '../../common/getText';
 import getTextTrim from '../../common/getTextTrim';
 import querySelectorArray from '../../common/querySelectorArray';
-import sendEvent from '../../analytics/sendEvent';
+import regExpFirstCapture from '../../common/regExpFirstCapture';
+import createDocument from '../../system/createDocument';
 
-function getId(e) {
-  return Number(e.getAttribute('background').match(/\/(\d+)/)?.[1]);
-}
+const getId = (e) => Number(regExpFirstCapture(/\/(?<id>\d+)/, e.getAttribute('background')));
 
 function getResult(script, e) {
   const thisRe = new RegExp(`${e} = (\\d+)`);
-  return Number(script.match(thisRe)[1]);
+  return Number(regExpFirstCapture(thisRe, script));
 }
 
 function gettokens(spec) {

@@ -1,19 +1,20 @@
-import buildOnlinePlayerData from './buildOnlinePlayerData';
-import changeLvl from './changeLvl';
-import createDocument from '../../system/createDocument';
-import doRefreshButton from './doRefreshButton';
-import { doTable } from './doTable';
-import filterHeaderOnlinePlayers from './filterHeaderOnlinePlayers';
-import { getNow } from '../../support/now';
+import onlinePlayersPage from '../../ajax/onlinePlayersPage';
 import jQueryNotPresent from '../../common/jQueryNotPresent';
 import loadDataTables from '../../common/loadDataTables';
 import on from '../../common/on';
 import onclick from '../../common/onclick';
-import onlinePlayersPage from '../../ajax/onlinePlayersPage';
 import partial from '../../common/partial';
-import resetEvt from './resetEvt';
-import setValue from '../../system/setValue';
+import regExpGroups from '../../common/regExpGroups';
+import { getNow } from '../../support/now';
+import createDocument from '../../system/createDocument';
 import { get, set } from '../../system/idb';
+import setValue from '../../system/setValue';
+import buildOnlinePlayerData from './buildOnlinePlayerData';
+import changeLvl from './changeLvl';
+import doRefreshButton from './doRefreshButton';
+import { doTable } from './doTable';
+import filterHeaderOnlinePlayers from './filterHeaderOnlinePlayers';
+import resetEvt from './resetEvt';
 
 let context = 0;
 let onlinePlayers = 0;
@@ -61,8 +62,8 @@ function processTheRows(doc, input) {
 }
 
 function getLastPage(input) {
-  const matches = input.parent().text().match(/(?<page>\d+)/);
-  return parseInt(matches.groups.page, 10);
+  const { page } = regExpGroups(/(?<page>\d+)/, input.parent().text());
+  return parseInt(page, 10);
 }
 
 function getOtherPages(callback, input) {
